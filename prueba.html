@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎓 ¡Se recibe Tomi! 🧬</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #060010;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== BG ===== */
+.bg-grad {
+  position: fixed; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse at 20% 20%, #1a003a 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, #003020 0%, transparent 60%),
+              radial-gradient(ellipse at 50% 50%, #0a0018 0%, #060010 100%);
+}
+
+/* stars */
+.stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.star {
+  position: absolute; border-radius: 50%;
+  animation: twinkle ease-in-out infinite alternate;
+  background: #fff;
+}
+@keyframes twinkle {
+  0%   { opacity: 0.1; transform: scale(0.8); }
+  100% { opacity: 0.8; transform: scale(1.2); }
+}
+
+/* floaty animals bg */
+.animals-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.anim-bg {
+  position: absolute; font-size: 28px;
+  animation: rise linear infinite; opacity: 0;
+  user-select: none;
+}
+@keyframes rise {
+  0%   { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+  8%   { opacity: 0.6; }
+  92%  { opacity: 0.4; }
+  100% { transform: translateY(-15vh) rotate(20deg); opacity: 0; }
+}
+
+.page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 18px 80px; }
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 60px 0 30px;
+  animation: pop 0.9s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes pop {
+  from { transform: scale(0.6) translateY(50px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.hero-chip {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+  color: #1a0000; font-size: 12px; font-weight: 800;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 7px 22px; border-radius: 100px; margin-bottom: 22px;
+  animation: wobble 2.5s ease-in-out infinite;
+}
+@keyframes wobble {
+  0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)}
+}
+
+.hero h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(58px, 14vw, 120px);
+  line-height: 0.92;
+  background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 35%, #00d2ff 65%, #c670ff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 40px rgba(168,255,120,0.25));
+}
+
+.hero-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(34px, 7vw, 64px);
+  color: #feca57;
+  margin-top: 4px;
+  text-shadow: 0 0 30px rgba(254,202,87,0.4);
+  animation: glow-pulse 2.5s ease-in-out infinite alternate;
+}
+@keyframes glow-pulse {
+  from { text-shadow: 0 0 20px rgba(254,202,87,0.3); }
+  to   { text-shadow: 0 0 60px rgba(254,202,87,0.7); }
+}
+
+.hero-subtitle {
+  margin-top: 14px;
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: rgba(255,255,255,0.55);
+  font-weight: 700; letter-spacing: 1px;
+}
+
+.hero-tagline {
+  margin-top: 18px;
+  display: inline-block;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(168,255,120,0.25);
+  border-radius: 16px;
+  padding: 14px 28px;
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: #a8ff78;
+  font-weight: 700;
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+/* ===== COUNTDOWN ===== */
+.cd-section {
+  text-align: center; margin: 50px 0 20px;
+  animation: fade-up 0.8s 0.3s both;
+}
+@keyframes fade-up {
+  from { opacity:0; transform:translateY(30px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.cd-label { font-size:11px; letter-spacing:5px; text-transform:uppercase; color:#78ffd6; font-weight:800; margin-bottom:22px; }
+
+.cd-row { display:flex; gap:clamp(8px,2vw,22px); justify-content:center; align-items:flex-start; flex-wrap:wrap; }
+
+.cd-unit { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.cd-box {
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(38px,7vw,76px);
+  width:clamp(82px,15vw,140px); height:clamp(82px,15vw,140px);
+  display:flex; align-items:center; justify-content:center;
+  border-radius:22px;
+  background:rgba(255,255,255,0.04);
+  border:2px solid rgba(120,255,214,0.2);
+  color:#fff; position:relative; overflow:hidden;
+  transition:border-color .3s;
+}
+.cd-box::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(168,255,120,0.07),transparent); }
+.cd-box.pop { animation:cd-pop .25s ease; border-color:#78ffd6; }
+@keyframes cd-pop { 0%{transform:scale(1)} 50%{transform:scale(1.09)} 100%{transform:scale(1)} }
+.cd-name { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.35); font-weight:800; }
+.cd-sep { font-family:'Fredoka One',cursive; font-size:clamp(28px,5vw,58px); color:rgba(120,255,214,0.35); margin-top:clamp(20px,3.5vw,44px); animation:blink 1s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:.4} 50%{opacity:0} }
+
+.celebration-msg { display:none; font-family:'Fredoka One',cursive; font-size:clamp(28px,5vw,54px); text-align:center; background:linear-gradient(135deg,#a8ff78,#78ffd6,#c670ff,#feca57); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; padding:20px; }
+
+/* ===== FOTOS ===== */
+.photos-section {
+  margin: 60px 0 50px;
+  position: relative;
+  animation: fade-up 0.8s 0.5s both;
+}
+
+.photos-title {
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(24px, 4.5vw, 42px);
+  color: #fff; margin-bottom: 40px;
+}
+.photos-title span { color: #feca57; }
+
+/* Las 3 fotos en row, bien integradas */
+.photos-row {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.photo-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+}
+
+/* Gorrito posicionado sobre la foto */
+.cap-wrap {
+  position: relative;
+  width: 100%;
+}
+.cap-img-svg {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-52%) rotate(-8deg);
+  width: 95px;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.75));
+  animation: cap-float 3.5s ease-in-out infinite;
+}
+@keyframes cap-float {
+  0%,100%{ transform: translateX(-52%) rotate(-8deg) translateY(0); }
+  50%     { transform: translateX(-52%) rotate(-8deg) translateY(-7px); }
+}
+
+.photo-frame {
+  width: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 2.5px solid rgba(255,255,255,0.12);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s;
+  position: relative;
+}
+.photo-frame:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 36px 80px rgba(0,0,0,0.8);
+}
+.photo-frame img {
+  width: 100%; display: block;
+  height: 320px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* overlay sutil de color por foto */
+.photo-frame::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 20px;
+  pointer-events: none;
+}
+.photo-item:nth-child(1) .photo-frame::after { background: linear-gradient(to bottom, rgba(168,255,120,0.08), transparent 50%); }
+.photo-item:nth-child(2) .photo-frame::after { background: linear-gradient(to bottom, rgba(254,202,87,0.08), transparent 50%); }
+.photo-item:nth-child(3) .photo-frame::after { background: linear-gradient(to bottom, rgba(198,112,255,0.08), transparent 50%); }
+
+.photo-badge {
+  margin-top: 14px;
+  padding: 7px 18px;
+  border-radius: 100px;
+  font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+}
+.photo-item:nth-child(1) .photo-badge { background: rgba(168,255,120,0.12); color: #a8ff78; border: 1.5px solid rgba(168,255,120,0.3); }
+.photo-item:nth-child(2) .photo-badge { background: rgba(254,202,87,0.12); color: #feca57; border: 1.5px solid rgba(254,202,87,0.3); }
+.photo-item:nth-child(3) .photo-badge { background: rgba(198,112,255,0.12); color: #c670ff; border: 1.5px solid rgba(198,112,255,0.3); }
+
+/* foto del medio más grande */
+.photo-item.middle { max-width: 310px; }
+.photo-item.middle .photo-frame img { height: 370px; }
+.photo-item.middle .cap-img-svg { width: 110px; top: -60px; }
+
+/* ===== ANIMALES REALES ===== */
+.animals-section {
+  margin: 20px 0 50px;
+  animation: fade-up 0.8s 0.7s both;
+}
+.animals-title {
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(22px, 4vw, 38px);
+  color: #fff; margin-bottom: 30px;
+}
+.animals-title span { color: #ff6b6b; }
+
+.animals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.animal-card {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  background: rgba(255,255,255,0.03);
+}
+.animal-card:hover { transform: translateY(-8px) rotate(-1deg); }
+.animal-card img {
+  width: 100%; display: block;
+  height: 200px; object-fit: cover;
+  transition: transform .4s;
+}
+.animal-card:hover img { transform: scale(1.08); }
+.animal-card .a-label {
+  position: absolute; bottom: 10px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  color: #fff; font-size: 12px; font-weight: 800;
+  letter-spacing: 1px; padding: 5px 14px; border-radius: 100px;
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+}
+
+/* ===== MEME ===== */
+.meme-section {
+  text-align: center; margin: 20px 0 50px;
+  animation: fade-up 0.8s 0.9s both;
+}
+.meme-card {
+  display: inline-block; max-width: 560px; width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 2px dashed rgba(254,202,87,0.35);
+  border-radius: 24px; padding: 24px 28px;
+  position: relative;
+}
+.meme-top { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
+.meme-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(20px, 3.5vw, 30px);
+  color: #fff; line-height: 1.4;
+}
+.meme-text .y { color: #feca57; }
+.meme-text .g { color: #a8ff78; }
+.meme-text .p { color: #c670ff; }
+.meme-bottom { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.3); font-style: italic; }
+
+/* ===== FELICITACIONES ===== */
+.congrats-section {
+  text-align: center; margin: 10px 0 50px;
+  animation: fade-up 0.8s 1.1s both;
+}
+.congrats-box {
+  display: inline-block; max-width: 600px; width: 100%;
+  background: linear-gradient(135deg, rgba(168,255,120,0.07), rgba(120,255,214,0.07), rgba(198,112,255,0.07));
+  border: 2px solid rgba(168,255,120,0.2);
+  border-radius: 28px; padding: 30px 32px;
+}
+.congrats-emoji { font-size: 48px; margin-bottom: 14px; display: block; }
+.congrats-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(24px, 5vw, 44px);
+  background: linear-gradient(135deg, #a8ff78, #78ffd6, #c670ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 14px;
+}
+.congrats-text {
+  font-size: clamp(15px, 2.5vw, 19px);
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7; font-weight: 600;
+}
+.congrats-text strong { color: #feca57; font-weight: 800; }
+
+/* ===== BOTÓN ===== */
+.party-section { text-align: center; margin: 20px 0 30px; animation: fade-up 0.8s 1.3s both; }
+.party-btn {
+  background: linear-gradient(135deg, #a8ff78, #78ffd6, #00d2ff);
+  color: #060010; border: none;
+  padding: 18px 52px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px; border-radius: 100px; cursor: pointer;
+  box-shadow: 0 6px 32px rgba(168,255,120,0.4);
+  transition: transform .2s, box-shadow .2s;
+  letter-spacing: 1px;
+}
+.party-btn:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 14px 44px rgba(168,255,120,0.55); }
+.party-btn:active { transform: scale(0.97); }
+
+/* confetti */
+#confetti-canvas { position:fixed; inset:0; pointer-events:none; z-index:999; }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="bg-grad"></div>
+<div class="stars" id="stars"></div>
+<div class="animals-bg" id="animalsBg"></div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-chip">🎓 Bioing. — Logro desbloqueado</div>
+    <h1>¡SE<br>RECIBE!</h1>
+    <div class="hero-name">Tomi 🧬</div>
+    <div class="hero-subtitle">Bioing. Tortul · Tomas I. · Bioingeniero</div>
+    <div class="hero-tagline">
+      Felicitaciones, Tomi 🏆<br>
+      Logro <strong style="color:#feca57">más que merecido</strong> ✨
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="cd-section">
+    <p class="cd-label">✦ cuenta regresiva al 16 de junio ✦</p>
+    <div class="cd-row" id="countdown">
+      <div class="cd-unit"><div class="cd-box" id="days">00</div><div class="cd-name">Días</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-box" id="hours">00</div><div class="cd-name">Horas</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-box" id="minutes">00</div><div class="cd-name">Minutos</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-box" id="seconds">00</div><div class="cd-name">Segundos</div></div>
+    </div>
+    <p class="celebration-msg" id="cel-msg">🎉 ¡FELICIDADES TOMI BIOINGE! 🧬🎓</p>
+  </section>
+
+  <!-- FOTOS -->
+  <section class="photos-section">
+    <h2 class="photos-title">El camino de <span>Tomi</span> 📸</h2>
+    <div class="photos-row">
+
+      <!-- Foto 1: niño con gatito -->
+      <div class="photo-item">
+        <div class="cap-wrap">
+          <svg class="cap-img-svg" viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="60,6 113,28 60,42 7,28" fill="#0d001a" stroke="#a8ff78" stroke-width="2"/>
+            <polygon points="60,6 113,28 60,42 7,28" fill="none" stroke="#78ffd6" stroke-width="0.8" stroke-dasharray="4,3"/>
+            <ellipse cx="60" cy="42" rx="53" ry="7.5" fill="#1a0030"/>
+            <path d="M16 30 Q22 57 60 65 Q98 57 104 30 Q80 42 60 42 Q40 42 16 30Z" fill="#0d001a" stroke="#a8ff78" stroke-width="1.2"/>
+            <line x1="95" y1="19" x2="109" y2="52" stroke="#a8ff78" stroke-width="2.2"/>
+            <circle cx="109" cy="55" r="5" fill="#a8ff78"/>
+            <line x1="105" y1="58" x2="101" y2="70" stroke="#78ffd6" stroke-width="1.5"/>
+            <line x1="109" y1="60" x2="109" y2="72" stroke="#78ffd6" stroke-width="1.5"/>
+            <line x1="113" y1="58" x2="117" y2="70" stroke="#78ffd6" stroke-width="1.5"/>
+            <polygon points="60,8 88,22 60,16" fill="rgba(168,255,120,0.12)"/>
+          </svg>
+          <div class="photo-frame">
+            <img src="Screenshot_20260607-213347.png" alt="Tomi de pequeño con su gatito"/>
+          </div>
+        </div>
+        <div class="photo-badge">El inicio 🐱</div>
+      </div>
+
+      <!-- Foto 2: sonriendo con auriculares — CENTRO más grande -->
+      <div class="photo-item middle">
+        <div class="cap-wrap">
+          <svg class="cap-img-svg" viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="60,6 113,28 60,42 7,28" fill="#1a1000" stroke="#feca57" stroke-width="2"/>
+            <polygon points="60,6 113,28 60,42 7,28" fill="none" stroke="#ffdf80" stroke-width="0.8" stroke-dasharray="4,3"/>
+            <ellipse cx="60" cy="42" rx="53" ry="7.5" fill="#2a1a00"/>
+            <path d="M16 30 Q22 57 60 65 Q98 57 104 30 Q80 42 60 42 Q40 42 16 30Z" fill="#1a1000" stroke="#feca57" stroke-width="1.2"/>
+            <line x1="95" y1="19" x2="109" y2="52" stroke="#feca57" stroke-width="2.2"/>
+            <circle cx="109" cy="55" r="5" fill="#feca57"/>
+            <line x1="105" y1="58" x2="101" y2="70" stroke="#ffdf80" stroke-width="1.5"/>
+            <line x1="109" y1="60" x2="109" y2="72" stroke="#ffdf80" stroke-width="1.5"/>
+            <line x1="113" y1="58" x2="117" y2="70" stroke="#ffdf80" stroke-width="1.5"/>
+            <polygon points="60,8 88,22 60,16" fill="rgba(254,202,87,0.15)"/>
+          </svg>
+          <div class="photo-frame">
+            <img src="Screenshot_20260607-213425.png" alt="Tomi sonriendo" style="object-position:center top;"/>
+          </div>
+        </div>
+        <div class="photo-badge">El crack 😁</div>
+      </div>
+
+      <!-- Foto 3: mate con auriculares -->
+      <div class="photo-item">
+        <div class="cap-wrap">
+          <svg class="cap-img-svg" viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="60,6 113,28 60,42 7,28" fill="#1a001a" stroke="#c670ff" stroke-width="2"/>
+            <polygon points="60,6 113,28 60,42 7,28" fill="none" stroke="#e0a0ff" stroke-width="0.8" stroke-dasharray="4,3"/>
+            <ellipse cx="60" cy="42" rx="53" ry="7.5" fill="#280028"/>
+            <path d="M16 30 Q22 57 60 65 Q98 57 104 30 Q80 42 60 42 Q40 42 16 30Z" fill="#1a001a" stroke="#c670ff" stroke-width="1.2"/>
+            <line x1="95" y1="19" x2="109" y2="52" stroke="#c670ff" stroke-width="2.2"/>
+            <circle cx="109" cy="55" r="5" fill="#c670ff"/>
+            <line x1="105" y1="58" x2="101" y2="70" stroke="#e0a0ff" stroke-width="1.5"/>
+            <line x1="109" y1="60" x2="109" y2="72" stroke="#e0a0ff" stroke-width="1.5"/>
+            <line x1="113" y1="58" x2="117" y2="70" stroke="#e0a0ff" stroke-width="1.5"/>
+            <polygon points="60,8 88,22 60,16" fill="rgba(198,112,255,0.12)"/>
+          </svg>
+          <div class="photo-frame">
+            <img src="Screenshot_20260607-213436.png" alt="Tomi tomando mate" style="object-position:center top;"/>
+          </div>
+        </div>
+        <div class="photo-badge">El combustible 🧉</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ANIMALES REALES -->
+  <section class="animals-section">
+    <h2 class="animals-title">Sus fans más fieles <span>🐾</span></h2>
+    <div class="animals-grid">
+
+      <div class="animal-card">
+        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80" alt="Perro feliz" onerror="this.src='https://placedog.net/400/300'"/>
+        <div class="a-label">🐶 "¡Así se hace, Tomi!"</div>
+      </div>
+
+      <div class="animal-card">
+        <img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=400&q=80" alt="Gato celebrando" onerror="this.src='https://placekitten.com/400/300'"/>
+        <div class="a-label">🐱 "Miau de orgullo"</div>
+      </div>
+
+      <div class="animal-card">
+        <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400&q=80" alt="Golden retriever" onerror="this.src='https://placedog.net/401/300'"/>
+        <div class="a-label">🐕 "¡El mejor bioinge!"</div>
+      </div>
+
+      <div class="animal-card">
+        <img src="https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?w=400&q=80" alt="Gatito tierno" onerror="this.src='https://placekitten.com/401/300'"/>
+        <div class="a-label">😺 "Sabía que podías"</div>
+      </div>
+
+      <div class="animal-card">
+        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=400&q=80" alt="Perrito lindo" onerror="this.src='https://placedog.net/402/300'"/>
+        <div class="a-label">🐩 "Woof woof graduado"</div>
+      </div>
+
+      <div class="animal-card">
+        <img src="https://images.unsplash.com/photo-1596854407944-bf87f6fdd049?w=400&q=80" alt="Gatito gracioso" onerror="this.src='https://placekitten.com/402/300'"/>
+        <div class="a-label">🐾 "¡Ahora a festejar!"</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MEME -->
+  <section class="meme-section">
+    <div class="meme-card">
+      <div class="meme-top">✦ meme oficial de la graduación ✦</div>
+      <div class="meme-text">
+        Bioingeniero:<br>
+        <span class="y">"mezclo biología e ingeniería"</span><br><br>
+        Todos: <span class="p">"¿eso qué es?"</span><br><br>
+        Tomi: <span class="g">"exactamente lo que pregunté<br>yo al inscribirme" 😂🧬</span>
+      </div>
+      <div class="meme-bottom">— Humor de egresado con mate en mano —</div>
+    </div>
+  </section>
+
+  <!-- FELICITACIONES -->
+  <section class="congrats-section">
+    <div class="congrats-box">
+      <span class="congrats-emoji">🏆</span>
+      <div class="congrats-title">¡Felicitaciones, Tomi!</div>
+      <p class="congrats-text">
+        <strong>Bioing. Tortul · Tomas I.</strong> — este logro es tuyo.<br><br>
+        Años de estudio, noches largas, mates a cualquier hora...<br>
+        Todo valió la pena. Sos un <strong>Bioingeniero</strong> de verdad 🧬<br><br>
+        Logro más que merecido. <strong>¡Orgullo total!</strong> 🎓
+      </p>
+    </div>
+  </section>
+
+  <!-- BOTÓN -->
+  <section class="party-section">
+    <button class="party-btn" onclick="launchConfetti()">🎉 ¡A festejar! 🎉</button>
+  </section>
+
+</div>
+
+<script>
+// STARS
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 3 + 1;
+  s.style.cssText = `left:${Math.random()*100}vw;top:${Math.random()*100}vh;width:${sz}px;height:${sz}px;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*4}s;`;
+  starsEl.appendChild(s);
+}
+
+// ANIMALS BG
+const bgAnimals = document.getElementById('animalsBg');
+const emojis = ['🐶','🐱','🐕','🐈','🐾','😺','🐩','🦮','🐕‍🦺','🐈‍⬛','😸','🐶'];
+for (let i = 0; i < 20; i++) {
+  const a = document.createElement('div');
+  a.className = 'anim-bg';
+  a.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  const sz = Math.floor(Math.random() * 22 + 20);
+  a.style.cssText = `left:${Math.random()*100}vw;font-size:${sz}px;animation-duration:${Math.random()*18+14}s;animation-delay:${Math.random()*16}s;`;
+  bgAnimals.appendChild(a);
+}
+
+// COUNTDOWN
+const target = new Date('2026-06-16T00:00:00');
+const prev = {days:'',hours:'',minutes:'',seconds:''};
+function pad(n){ return String(n).padStart(2,'0'); }
+function tick(){
+  const diff = target - new Date();
+  if (diff <= 0) {
+    document.getElementById('countdown').style.display='none';
+    document.getElementById('cel-msg').style.display='block';
+    launchConfetti(); return;
+  }
+  const v = {
+    days:    Math.floor(diff/86400000),
+    hours:   Math.floor((diff%86400000)/3600000),
+    minutes: Math.floor((diff%3600000)/60000),
+    seconds: Math.floor((diff%60000)/1000)
+  };
+  for (const k of ['days','hours','minutes','seconds']) {
+    const el = document.getElementById(k);
+    const p = pad(v[k]);
+    if (prev[k] !== p) {
+      el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+      el.textContent = p; prev[k] = p;
+    }
+  }
+}
+tick(); setInterval(tick, 1000);
+
+// CONFETTI
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let pieces = [], raf;
+function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+resize(); addEventListener('resize', resize);
+const cc = ['#a8ff78','#78ffd6','#c670ff','#ff6b6b','#feca57','#00d2ff','#fff','#ff9ff3','#54a0ff'];
+
+function launchConfetti(){
+  pieces = [];
+  for (let i=0;i<240;i++){
+    pieces.push({
+      x:Math.random()*canvas.width, y:-20-Math.random()*400,
+      w:Math.random()*13+4, h:Math.random()*7+3,
+      color:cc[Math.floor(Math.random()*cc.length)],
+      vx:(Math.random()-.5)*6, vy:Math.random()*5+2,
+      angle:Math.random()*Math.PI*2, spin:(Math.random()-.5)*.25,
+      alpha:1
+    });
+  }
+  cancelAnimationFrame(raf); draw();
+}
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces = pieces.filter(p=>p.alpha>0);
+  for (const p of pieces){
+    ctx.save(); ctx.globalAlpha=p.alpha;
+    ctx.translate(p.x+p.w/2,p.y+p.h/2); ctx.rotate(p.angle);
+    ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+    ctx.restore();
+    p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; p.vy+=0.09;
+    if(p.y>canvas.height*.78) p.alpha-=0.022;
+  }
+  if(pieces.length) raf=requestAnimationFrame(draw);
+}
+</script>
+</body>
+</html>
